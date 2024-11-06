@@ -6,6 +6,7 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['development', 'production', 'test']),
     DATABASE_URL: z.string().url(),
+    REDIS_HOST: z.string(),
   },
   onValidationError: (error: ZodError) => {
     console.error(
