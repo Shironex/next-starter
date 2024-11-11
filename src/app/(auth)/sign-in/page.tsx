@@ -1,10 +1,26 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+
 import SignInForm from './sign-in-form'
 
 const SignInPage = () => {
   return (
-    <div className="mx-auto max-w-sm">
-      <SignInForm />
-    </div>
+    <Card className="max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-center text-2xl">Login</CardTitle>
+        <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <SignInForm />
+      </CardContent>
+    </Card>
   )
 }
 
