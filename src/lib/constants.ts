@@ -4,7 +4,7 @@ export const GITHUB_AVATARS_URL = 'https://avatars.githubusercontent.com/u/'
 export const GOOGLE_AVATARS_URL = 'https://lh3.googleusercontent.com/a/'
 
 export const redirects = {
-  toLogin: '/sign-in',
+  toSignin: '/sign-in',
   toSignup: '/sign-up',
   toForgotPassword: '/forgot-password',
   afterLogin: '/dashboard',

@@ -8,6 +8,11 @@ import {
 
 import SignInForm from './sign-in-form'
 
+export const metadata = {
+  title: 'Login',
+  description: 'Login',
+}
+
 const SignInPage = () => {
   return (
     <Card className="max-w-sm">
