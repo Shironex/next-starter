@@ -90,6 +90,7 @@ const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
       ClassName,
       spanClassName,
       variant,
+      iconprops,
       ...props
     },
     ref
@@ -102,6 +103,11 @@ const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
         disabled={props.disabled ? props.disabled : loading}
         className={cn(className, ClassName, 'relative')}
       >
+        {iconprops && iconprops.Icon && iconprops.iconPlacement === 'left' && (
+          <div className="group-hover:translate-x-100 w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:pr-2 group-hover:opacity-100">
+            <iconprops.Icon className="size-4" />
+          </div>
+        )}
         <span className={cn(spanClassName, loading ? 'opacity-0' : '')}>
           {children}
         </span>
@@ -110,6 +116,14 @@ const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
             <AnimatedSpinner className="h-6 w-6 animate-spin" />
           </div>
         ) : null}
+        {!loading &&
+          iconprops &&
+          iconprops.Icon &&
+          iconprops.iconPlacement === 'right' && (
+            <div className="w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-2 group-hover:opacity-100">
+              <iconprops.Icon className="size-4" />
+            </div>
+          )}
       </Button>
     )
   }
