@@ -3,7 +3,6 @@
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { KeyRoundIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -24,7 +23,7 @@ import { redirects } from '@/lib/constants'
 
 import { LoginSchema, loginSchema } from './validation'
 
-const LoginForm = () => {
+const SignInForm = () => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -78,7 +77,7 @@ const LoginForm = () => {
                   </FormLabel>
                   <Link
                     data-cy="forgot-password-link"
-                    className="ml-2 text-sm font-medium text-purple-500 transition duration-150 ease-in-out hover:text-purple-400"
+                    className="ml-2 text-sm font-medium text-muted-foreground transition duration-150 ease-in-out hover:text-primary"
                     href={redirects.toForgotPassword}
                   >
                     Forgot?
@@ -102,11 +101,7 @@ const LoginForm = () => {
             disabled={false}
             loading={false}
             variant={'expandIcon'}
-            iconprops={{
-              iconPlacement: 'right',
-              Icon: KeyRoundIcon,
-            }}
-            className="w-full rounded-full text-white"
+            className="w-full rounded-full"
             data-cy="login-btn"
           >
             Sign In
@@ -117,7 +112,7 @@ const LoginForm = () => {
         <div className="text-sm text-slate-400">
           Don&apos;t have an account?{' '}
           <Link
-            className="font-medium text-purple-500 transition duration-150 ease-in-out hover:text-purple-400"
+            className="font-medium text-muted-foreground transition duration-150 ease-in-out hover:text-primary"
             href={redirects.toSignup}
           >
             Sign up
@@ -131,12 +126,12 @@ const LoginForm = () => {
         <div className="ml-3 grow border-t border-primary" aria-hidden="true" />
       </div>
       {/* Social login */}
-      <div className="flex space-x-3">
+      <div className="flex items-center justify-between space-x-3 px-14">
         <Link
           href={{
             pathname: '/api/login/google',
           }}
-          className="flex w-full items-center justify-center"
+          className="flex items-center justify-center"
         >
           <GoogleIcon />
         </Link>
@@ -144,7 +139,7 @@ const LoginForm = () => {
           href={{
             pathname: '/api/login/github',
           }}
-          className="flex w-full items-center justify-center"
+          className="flex items-center justify-center"
         >
           <GithubIcon />
         </Link>
@@ -153,4 +148,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default SignInForm
