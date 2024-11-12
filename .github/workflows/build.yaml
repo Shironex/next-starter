@@ -30,3 +30,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_PUBLIC_URL }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }},
+          ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
+          SMTP_HOST: ${{ secrets.SMTP_HOST }},
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
