@@ -170,17 +170,13 @@ const SignUpForm = () => {
       {/* Social login */}
       <div className="flex items-center justify-between space-x-3 px-14">
         <Link
-          href={{
-            pathname: '/api/login/google',
-          }}
+          href={'/api/login/google'}
           className="flex items-center justify-center"
         >
           <GoogleIcon />
         </Link>
         <Link
-          href={{
-            pathname: '/api/login/github',
-          }}
+          href={'/api/login/github'}
           className="flex items-center justify-center"
         >
           <GithubIcon />
