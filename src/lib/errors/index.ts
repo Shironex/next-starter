@@ -18,6 +18,13 @@ export class EmailInUseError extends PublicError {
   }
 }
 
+export class UserNotFoundError extends PublicError {
+  constructor() {
+    super('User not found')
+    this.name = 'UserNotFoundError'
+  }
+}
+
 export class NotFoundError extends PublicError {
   constructor() {
     super('Resource not found')

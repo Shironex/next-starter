@@ -7,6 +7,11 @@ export const env = createEnv({
     NODE_ENV: z.enum(['development', 'production', 'test']),
     DATABASE_URL: z.string().url(),
     REDIS_HOST: z.string(),
+    ENABLE_SIGNUP_WITH_EMAIL: z.boolean(),
+    SMTP_HOST: z.string(),
+    SMTP_PORT: z.string(),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASSWORD: z.string().optional(),
   },
   onValidationError: (error: ZodError) => {
     console.error(
