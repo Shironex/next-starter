@@ -1,3 +1,4 @@
+/* eslint-disable n/no-process-env */
 import { type TransportOptions, createTransport } from 'nodemailer'
 
 import { EMAIL_SENDER } from '@/lib/constants'

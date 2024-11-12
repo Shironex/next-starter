@@ -8,3 +8,7 @@ export interface GoogleUser {
   email_verified: boolean
   locale: string
 }
+
+export function POST() {
+  throw new Error('Not implemented')
+}

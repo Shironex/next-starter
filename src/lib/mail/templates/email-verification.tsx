@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import {
   Body,
   Container,
@@ -9,6 +10,7 @@ import {
   Section,
   Text,
 } from '@react-email/components'
+
 import { APP_TITLE } from '@/lib/constants'
 
 export interface VerificationCodeEmailProps {
@@ -67,8 +69,7 @@ const container = {
 
 const text = {
   fontSize: '16px',
-  fontFamily:
-    "'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif",
+  fontFamily: `'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif`,
   fontWeight: '300',
   color: '#404040',
   lineHeight: '26px',

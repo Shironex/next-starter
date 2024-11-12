@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import {
   Body,
   Button,
@@ -9,6 +10,7 @@ import {
   Section,
   Text,
 } from '@react-email/components'
+
 import { APP_TITLE } from '@/lib/constants'
 
 export interface ResetPasswordEmailProps {
