@@ -12,6 +12,7 @@ export const env = createEnv({
     SMTP_PORT: z.string(),
     SMTP_USER: z.string().optional(),
     SMTP_PASSWORD: z.string().optional(),
+    APP_DOMAIN: z.string(),
   },
   onValidationError: (error: ZodError) => {
     console.error(
