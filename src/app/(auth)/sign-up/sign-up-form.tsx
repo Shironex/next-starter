@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -21,6 +22,9 @@ import { LoadingButton } from '@/components/loading-button'
 
 import { redirects } from '@/lib/constants'
 
+import { toast } from '@/hooks/use-toast'
+
+import { signUpAction } from './action'
 import { SignUpSchema, signUpSchema } from './validation'
 
 const SignUpForm = () => {
@@ -32,13 +36,28 @@ const SignUpForm = () => {
     },
   })
 
-  const onSubmit = async (data: SignUpSchema) => {
-    console.log(data)
-  }
+  const { execute, isPending } = useServerAction(signUpAction, {
+    onSuccess() {
+      toast({
+        title: 'Account created',
+        description: 'Please check your email for verification',
+      })
+    },
+    onError({ err }) {
+      toast({
+        title: 'Something went wrong',
+        description: err.message,
+        variant: 'destructive',
+      })
+    },
+  })
+
+  const handleSubmit = form.handleSubmit((data) => execute(data))
+
   return (
     <div>
       <Form {...form}>
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="grid gap-4" onSubmit={handleSubmit}>
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
@@ -140,9 +159,9 @@ const SignUpForm = () => {
             )}
           />
           <LoadingButton
-            disabled={false}
-            loading={false}
-            variant={'expandIcon'}
+            disabled={isPending}
+            loading={isPending}
+            variant={'shine'}
             className="w-full rounded-full"
             data-cy="register-btn"
           >

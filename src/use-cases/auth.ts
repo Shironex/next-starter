@@ -1,4 +1,4 @@
-import { TimeSpan, createDate } from 'oslo'
+import { TimeSpan, createDate, isWithinExpirationDate } from 'oslo'
 import { alphabet, generateRandomString } from 'oslo/crypto'
 
 import { EmailInUseError, LoginError, PublicError } from '@/lib/errors'
@@ -9,7 +9,7 @@ import { createAccount, getAccountByUserId } from '@/data-access/accounts'
 import { hashPassword, verifyPassword } from '@/data-access/auth'
 import { createEmailVerificationCode } from '@/data-access/emails'
 import { createProfile } from '@/data-access/profiles'
-import { createUser, findUserByEmail } from '@/data-access/users'
+import { createUser, findEmailVerificationCode, findUserByEmail, updateUser } from '@/data-access/users'
 import { env } from '@/env/server'
 
 export const signInUseCase = async (email: string, password: string) => {
@@ -76,4 +76,38 @@ export const signUpUseCase = async (
   })
 
   return { id: user.id }
+}
+
+export const verifyEmailUseCase = async (
+  userId: string,
+  email: string,
+  code: string
+) => {
+  const emailVerificationCode = await findEmailVerificationCode(userId)
+
+  if (!emailVerificationCode) {
+    throw new PublicError('No verification code found.')
+  }
+
+  //? Check if the code is for the user
+  if (emailVerificationCode.userId !== userId) {
+    throw new PublicError('Invalid code.')
+  }
+
+  //? Check if the code is correct
+  if (emailVerificationCode.code !== code) {
+    throw new PublicError('Invalid code.')
+  }
+
+  //? Check if the code is expired
+  if (!isWithinExpirationDate(emailVerificationCode.expiresAt)) {
+    throw new PublicError('Code expired.')
+  }
+
+  //? Check if the email specified in the code is the same as the one used to sign up
+  if (emailVerificationCode.email !== email) {
+    throw new PublicError('Email does not match.')
+  }
+
+  await updateUser(userId, { emailVerified: true })
 }

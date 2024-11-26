@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -21,25 +22,42 @@ import { LoadingButton } from '@/components/loading-button'
 
 import { redirects } from '@/lib/constants'
 
-import { LoginSchema, loginSchema } from './validation'
+import { toast } from '@/hooks/use-toast'
+
+import { signInAction } from './action'
+import { SignInInput, signInSchema } from './validation'
 
 const SignInForm = () => {
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SignInInput>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   })
 
-  const onSubmit = async (data: LoginSchema) => {
-    console.log(data)
-  }
+  const { execute, isPending } = useServerAction(signInAction, {
+    onError({ err }) {
+      toast({
+        title: 'Something went wrong',
+        description: err.message,
+        variant: 'destructive',
+      })
+    },
+    onSuccess() {
+      toast({
+        title: 'Logged in',
+        description: 'Enjoy your project management',
+      })
+    },
+  })
+
+  const handleSubmit = form.handleSubmit((data) => execute(data))
 
   return (
     <div>
       <Form {...form}>
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="grid gap-4" onSubmit={handleSubmit}>
           <FormField
             control={form.control}
             name="email"
@@ -98,9 +116,9 @@ const SignInForm = () => {
             )}
           />
           <LoadingButton
-            disabled={false}
-            loading={false}
-            variant={'expandIcon'}
+            disabled={isPending}
+            loading={isPending}
+            variant={'shine'}
             className="w-full rounded-full"
             data-cy="login-btn"
           >

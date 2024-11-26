@@ -4,3 +4,5 @@ export interface BaseLayoutProps
   }> {
   params?: Record<string, string>
 }
+
+export type AccountRole = 'admin' | 'user'
