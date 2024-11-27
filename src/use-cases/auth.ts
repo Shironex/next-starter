@@ -3,14 +3,18 @@ import { alphabet, generateRandomString } from 'oslo/crypto'
 
 import { EmailInUseError, LoginError, PublicError } from '@/lib/errors'
 import { sendMail } from '@/lib/mail/nodemailer'
-import { renderVerificationCodeEmail } from '@/lib/mail/render'
+import { renderResetPasswordEmail, renderVerificationCodeEmail } from '@/lib/mail/render'
 
-import { createAccount, getAccountByUserId } from '@/data-access/accounts'
+import { createAccount, getAccountByUserId, updateAccount } from '@/data-access/accounts'
 import { hashPassword, verifyPassword } from '@/data-access/auth'
 import { createEmailVerificationCode } from '@/data-access/emails'
 import { createProfile } from '@/data-access/profiles'
-import { createUser, findEmailVerificationCode, findUserByEmail, updateUser } from '@/data-access/users'
-import { env } from '@/env/server'
+import { createUser, deletePasswordResetCode, findEmailVerificationCode, findPasswordResetCode, findUserByEmail, generatePasswordResetToken, updateUser } from '@/data-access/users'
+import { env as envClient } from '@/env/client'
+import { env as envServer } from '@/env/server'
+import { generateId } from '@/lib/auth'
+import { invalidateSession } from '@/lib/auth/session'
+import { timeFromNow } from '@/lib/utils'
 
 export const signInUseCase = async (email: string, password: string) => {
   const user = await findUserByEmail(email)
@@ -39,7 +43,7 @@ export const signUpUseCase = async (
   password: string,
   displayName: string
 ) => {
-  if (env.ENABLE_SIGNUP_WITH_EMAIL === false) {
+  if (envServer.ENABLE_SIGNUP_WITH_EMAIL === false) {
     throw new PublicError('Sign up is disabled.')
   }
 
@@ -110,4 +114,61 @@ export const verifyEmailUseCase = async (
   }
 
   await updateUser(userId, { emailVerified: true })
+}
+
+export const sendPasswordResetLinkUseCase = async (email: string) => {
+  const user = await findUserByEmail(email)
+
+  if (!user) {
+    throw new PublicError('User with this email was not found.')
+  }
+
+  if (!user.emailVerified) {
+    throw new PublicError(
+      'Your email is not verified. Please verify your email first.'
+    )
+  }
+
+  const lastSend = await findPasswordResetCode(user.id)
+
+  if (lastSend && isWithinExpirationDate(lastSend.expiresAt)) {
+    throw new PublicError(
+      `Please wait ${timeFromNow(lastSend.expiresAt)} before resending`
+    )
+  }
+
+  const verificationToken = generateId(40)
+
+  try {
+    await generatePasswordResetToken(verificationToken, user.id)
+
+    const verificationLink = `${envClient.NEXT_PUBLIC_APP_URL}/forgot-password/${verificationToken}`
+
+    await sendMail({
+      to: user.email,
+      subject: 'Reset your password',
+      body: await renderResetPasswordEmail({ link: verificationLink }),
+    })
+  } catch (error) {
+    console.error('Error sending password reset link:', error)
+    throw new PublicError('Failed to send password reset link.')
+  }
+}
+
+export const resetPasswordUseCase = async (token: string, password: string) => {
+  const dbToken = await deletePasswordResetCode(token)
+
+  if (!dbToken) {
+    throw new PublicError('Invalid password reset link.')
+  }
+
+  if (!isWithinExpirationDate(dbToken.expiresAt)) {
+    throw new PublicError('Password reset link expired.')
+  }
+
+  await invalidateSession(dbToken.userId)
+
+  const hashedPassword = await hashPassword(password)
+
+  await updateAccount(dbToken.userId, { password: hashedPassword })
 }

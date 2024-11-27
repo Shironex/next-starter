@@ -99,7 +99,7 @@ const VerifyEmailForm = () => {
           <LoadingButton
             loading={isPending}
             data-cy="verify-btn"
-            className="mt-4 w-full text-white"
+            className="mt-4 w-full rounded-full"
           >
             Verify
           </LoadingButton>

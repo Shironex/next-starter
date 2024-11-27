@@ -23,7 +23,7 @@ const LogOutButton = ({ isPending }: LogOutButtonProps) => {
       <LoadingButton
         disabled={isPending || logoutIsPending}
         variant="link"
-        className="p-0 font-normal"
+        className="rounded-full p-0 font-normal"
       >
         want to use another email? Log out now.
       </LoadingButton>
