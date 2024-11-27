@@ -1,3 +1,4 @@
+/* eslint-disable n/no-process-env */
 import { env } from '@/env/server'
 import { assertAuthenticated } from '@/lib/auth/session'
 import { createServerActionProcedure } from 'zsa'
@@ -46,7 +47,7 @@ export const authenticatedAction = createServerActionProcedure()
 export const unauthenticatedAction = createServerActionProcedure()
   .experimental_shapeError(shapeErrors)
   .handler(async () => {
-    if (process.env.cypress_test) {
+    if (process.env.cypress_test === 'true') {
       return
     }
 
