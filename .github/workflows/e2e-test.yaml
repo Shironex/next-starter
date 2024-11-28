@@ -1,0 +1,67 @@
+name: Cypress E2E Test
+
+on:
+  pull_request:
+    branches: ['master', 'dev']
+  workflow_dispatch:
+
+jobs:
+  cypress-e2e-test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    name: Run Cypress e2e tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ⚙️ - Cache dependencies ⚡ - Install dependencies 🔧
+        uses: ./.github/actions/setup-node
+
+      - name: Start Docker Compose
+        uses: hoverkraft-tech/compose-action@v1.5.1
+        with:
+          compose-file: './docker-compose.yml'
+          up-flags: '-d'
+
+      - name: Run Database setup
+        run: pnpm run db:setup
+        env:
+          NODE_ENV: test
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }},
+          ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
+          SMTP_HOST: ${{ secrets.SMTP_HOST }},
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+
+      - name: Cache Next.js build cache 📦
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-cache-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-cache-
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          # record: true
+          # parallel: true
+          install: false
+          build: pnpm build
+          start: pnpm start
+          wait-on: 'http://localhost:3000'
+        env:
+          DEBUG: '@cypress/github-action'
+          NODE_ENV: test
+          cypress_test: true
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }},
+          ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
+          SMTP_HOST: ${{ secrets.SMTP_HOST }},
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          cypress_test: ${{ secrets.cypress_test }}
