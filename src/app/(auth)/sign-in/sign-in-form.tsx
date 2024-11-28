@@ -30,6 +30,7 @@ import { SignInInput, signInSchema } from './validation'
 const SignInForm = () => {
   const form = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
+    mode: "onChange",
     defaultValues: {
       email: '',
       password: '',
@@ -120,7 +121,7 @@ const SignInForm = () => {
             loading={isPending}
             variant={'shine'}
             className="w-full rounded-full"
-            data-cy="login-btn"
+            data-cy="sign-in-btn"
           >
             Sign In
           </LoadingButton>

@@ -13,7 +13,8 @@
     "db:generate": "dotenv -e .env.local drizzle-kit generate ",
     "db:migrate": "dotenv -e .env.local tsx src/lib/db/migrate.ts",
     "db:studio": "dotenv -e .env.local drizzle-kit studio",
-    "db:setup": "pnpm db:generate && pnpm db:migrate"
+    "db:setup": "pnpm db:generate && pnpm db:migrate",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -47,11 +48,18 @@
     "zsa-react": "^0.2.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@cypress/webpack-preprocessor": "^6.0.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.16",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "babel-loader": "^9.2.1",
+    "cypress": "^13.16.0",
+    "cypress-v10-preserve-cookie": "^1.2.1",
     "dotenv-cli": "^7.4.2",
     "drizzle-kit": "^0.28.0",
     "eslint": "^8",

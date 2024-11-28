@@ -16,6 +16,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/login/github/callback">
     | StaticRoute<"/api/login/google">
     | StaticRoute<"/api/login/google/callback">
+    | StaticRoute<"/api/user/me">
     | StaticRoute<"/dashboard">
     | StaticRoute<"/forgot-password">
     | DynamicRoute<"/forgot-password/[token]", { "token": string }>

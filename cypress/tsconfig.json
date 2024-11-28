@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["ES5", "DOM", "DOM.Iterable"],
+    "types": ["cypress", "node"],
+    "baseUrl": "../",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["support/index.d.ts", "**/*.ts*", "tasks/task-helpers.ts"],
+  "extends": "../tsconfig.json"
+}

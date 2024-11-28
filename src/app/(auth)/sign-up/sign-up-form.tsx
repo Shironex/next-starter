@@ -30,6 +30,7 @@ import { SignUpSchema, signUpSchema } from './validation'
 const SignUpForm = () => {
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
+    mode: "onChange",
     defaultValues: {
       email: '',
       password: '',
@@ -80,7 +81,7 @@ const SignUpForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage data-cy="error-message-email" />
+                  <FormMessage data-cy="error-message-first-name" />
                 </FormItem>
               )}
             />
@@ -105,7 +106,7 @@ const SignUpForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage data-cy="error-message-email" />
+                  <FormMessage data-cy="error-message-last-name" />
                 </FormItem>
               )}
             />
@@ -163,7 +164,7 @@ const SignUpForm = () => {
             loading={isPending}
             variant={'shine'}
             className="w-full rounded-full"
-            data-cy="register-btn"
+            data-cy="sign-up-btn"
           >
             Sign Up
           </LoadingButton>
