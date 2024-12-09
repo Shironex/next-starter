@@ -64,4 +64,3 @@ jobs:
           ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
           SMTP_HOST: ${{ secrets.SMTP_HOST }},
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          cypress_test: ${{ secrets.cypress_test }}
