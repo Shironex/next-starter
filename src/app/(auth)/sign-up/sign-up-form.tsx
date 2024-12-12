@@ -30,7 +30,7 @@ import { SignUpSchema, signUpSchema } from './validation'
 const SignUpForm = () => {
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
