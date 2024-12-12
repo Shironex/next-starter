@@ -24,6 +24,7 @@ import { emailSchema, emailformValues } from './validation'
 export default function EmailForm() {
   const form = useForm<emailformValues>({
     resolver: zodResolver(emailSchema),
+    mode: 'onChange',
     defaultValues: { email: '' },
   })
 
@@ -59,11 +60,12 @@ export default function EmailForm() {
                   id="email"
                   type="email"
                   placeholder="Enter your new email"
+                  data-cy="email-input"
                   required
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage data-cy="error-message-email" />
             </FormItem>
           )}
         />
@@ -73,6 +75,7 @@ export default function EmailForm() {
           loading={isPending}
           type="submit"
           className="w-full rounded-xl sm:w-auto"
+          data-cy="btn-submit"
         >
           Update Email
         </LoadingButton>
