@@ -6,6 +6,14 @@ import {
   verifiedUser,
 } from '../fixtures/auth.json'
 
+const EMAIL_ERROR = 'Please enter a valid email'
+const PASSWORD_SHORT_ERROR = 'Password is too short.'
+const PASSWORD_LONG_ERROR = 'Password can be at most 32 characters long.'
+const FIRST_NAME_SHORT_ERROR = 'First name is too short.'
+const FIRST_NAME_LONG_ERROR = 'First name is too long.'
+const LAST_NAME_SHORT_ERROR = 'Last name is too short.'
+const LAST_NAME_LONG_ERROR = 'Last name is too long.'
+
 context('Auth', () => {
   before(() => {
     cy.task('tearDownDataBase')
@@ -19,69 +27,41 @@ context('Auth', () => {
     })
 
     it('should throw form error when email is invalid', () => {
-      cy.getDataCy('email-input').type('test')
-      cy.getDataCy('error-message-email').should('be.visible')
-      cy.getDataCy('error-message-email').should(
-        'have.text',
-        'Please enter a valid email'
-      )
+      cy.typeInput('email-input', 'test')
+      cy.checkErrorMessage('error-message-email', EMAIL_ERROR)
     })
 
     describe('should throw form error when password is invalid', () => {
       it('too short', () => {
-        cy.getDataCy('password-input').type('test')
-        cy.getDataCy('error-message-password').should('be.visible')
-        cy.getDataCy('error-message-password').should(
-          'have.text',
-          'Password is too short.'
-        )
+        cy.typeInput('password-input', 'test')
+        cy.checkErrorMessage('error-message-password', PASSWORD_SHORT_ERROR)
       })
 
       it('too long', () => {
-        cy.getDataCy('password-input').type('t'.repeat(33))
-        cy.getDataCy('error-message-password').should('be.visible')
-        cy.getDataCy('error-message-password').should(
-          'have.text',
-          'Password can be at most 32 characters long.'
-        )
+        cy.typeInput('password-input', 't'.repeat(33))
+        cy.checkErrorMessage('error-message-password', PASSWORD_LONG_ERROR)
       })
     })
 
     describe('should throw form error when username is invalid', () => {
       it('First Name too short', () => {
-        cy.getDataCy('first-name-input').type('tt')
-        cy.getDataCy('error-message-first-name').should('be.visible')
-        cy.getDataCy('error-message-first-name').should(
-          'have.text',
-          'First name is too short.'
-        )
+        cy.typeInput('first-name-input', 'tt')
+        cy.checkErrorMessage('error-message-first-name', FIRST_NAME_SHORT_ERROR)
       })
 
       it('First Name too long', () => {
-        cy.getDataCy('first-name-input').type('t'.repeat(33))
-        cy.getDataCy('error-message-first-name').should('be.visible')
-        cy.getDataCy('error-message-first-name').should(
-          'have.text',
-          'First name is too long.'
-        )
+        cy.typeInput('first-name-input', 't'.repeat(33))
+        cy.checkErrorMessage('error-message-first-name', FIRST_NAME_LONG_ERROR)
       })
 
       it('Last Name too short', () => {
-        cy.getDataCy('last-name-input').type('tt')
-        cy.getDataCy('error-message-last-name').should('be.visible')
-        cy.getDataCy('error-message-last-name').should(
-          'have.text',
-          'Last name is too short.'
-        )
+        cy.typeInput('last-name-input', 'tt')
+        cy.checkErrorMessage('error-message-last-name', LAST_NAME_SHORT_ERROR)
       })
 
       it('Last Name too long', () => {
-        cy.getDataCy('last-name-input').type('t'.repeat(33))
-        cy.getDataCy('error-message-last-name').should('be.visible')
-        cy.getDataCy('error-message-last-name').should(
-          'have.text',
-          'Last name is too long.'
-        )
+        cy.typeInput('last-name-input', 't'.repeat(33))
+        cy.checkErrorMessage('error-message-last-name', LAST_NAME_LONG_ERROR)
       })
     })
 
@@ -102,31 +82,19 @@ context('Auth', () => {
     })
 
     it('should throw form error when email is invalid', () => {
-      cy.getDataCy('email-input').type('test')
-      cy.getDataCy('error-message-email').should('be.visible')
-      cy.getDataCy('error-message-email').should(
-        'have.text',
-        'Please enter a valid email'
-      )
+      cy.typeInput('email-input', 'test')
+      cy.checkErrorMessage('error-message-email', EMAIL_ERROR)
     })
 
     describe('should throw form error when password is invalid', () => {
       it('too short', () => {
-        cy.getDataCy('password-input').type('test')
-        cy.getDataCy('error-message-password').should('be.visible')
-        cy.getDataCy('error-message-password').should(
-          'have.text',
-          'Password is too short.'
-        )
+        cy.typeInput('password-input', 'test')
+        cy.checkErrorMessage('error-message-password', PASSWORD_SHORT_ERROR)
       })
 
       it('too long', () => {
-        cy.getDataCy('password-input').type('t'.repeat(33))
-        cy.getDataCy('error-message-password').should('be.visible')
-        cy.getDataCy('error-message-password').should(
-          'have.text',
-          'Password can be at most 32 characters long.'
-        )
+        cy.typeInput('password-input', 't'.repeat(33))
+        cy.checkErrorMessage('error-message-password', PASSWORD_LONG_ERROR)
       })
     })
 
@@ -145,23 +113,21 @@ context('Auth', () => {
     })
 
     it('should throw form error when email is invalid', () => {
-      cy.getDataCy('email-input').type('test')
-      cy.getDataCy('error-message-email').should('be.visible')
-      cy.getDataCy('error-message-email').should(
-        'have.text',
-        'Please enter a valid email'
-      )
+      cy.typeInput('email-input', 'test')
+      cy.checkErrorMessage('error-message-email', EMAIL_ERROR)
     })
 
     it('should throw form error when email is not found', () => {
-      cy.getDataCy('email-input').type('writewiz@gmail.com')
+      cy.typeInput('email-input', 'writewiz@gmail.com')
       cy.getDataCy('reset-password-btn').click()
+
       cy.contains('li', 'User with this email was not found.')
     })
 
     it('should throw form error when email is not verified', () => {
-      cy.getDataCy('email-input').type(notVerifiedUser.email)
+      cy.typeInput('email-input', notVerifiedUser.email)
       cy.getDataCy('reset-password-btn').click()
+
       cy.contains(
         'li',
         'Your email is not verified. Please verify your email first.'
@@ -169,7 +135,7 @@ context('Auth', () => {
     })
 
     it('should user be able to request password reset successfully', () => {
-      cy.getDataCy('email-input').type(verifiedUser.email)
+      cy.typeInput('email-input', verifiedUser.email)
       cy.getDataCy('reset-password-btn').click()
 
       cy.url().should('eq', `${Cypress.config().baseUrl}/sign-in`)
@@ -187,7 +153,7 @@ context('Auth', () => {
           `${Cypress.config().baseUrl}/forgot-password`
         )
 
-        cy.getDataCy('password-input').type(verifiedUser.password)
+        cy.typeInput('password-input', verifiedUser.password)
         cy.getDataCy('confirm-password-btn').click()
 
         cy.url().should('eq', `${Cypress.config().baseUrl}/sign-in`)
@@ -200,7 +166,9 @@ context('Auth', () => {
   describe('Logout', () => {
     it('should user be able to logout successfully', () => {
       cy.login(verifiedUser.email, verifiedUser.password)
+
       cy.visit(`${Cypress.config().baseUrl}/dashboard`)
+
       cy.logout()
     })
   })

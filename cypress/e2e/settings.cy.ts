@@ -23,22 +23,21 @@ context('Settings', () => {
   })
 
   const updateEmail = (email: string) => {
-    cy.getDataCy('email-input').clear().type(email)
+    cy.typeInput('email-input', email)
     cy.getDataCy('btn-submit-email-update').click()
   }
 
   const updatePassword = (currentPassword: string, newPassword: string) => {
-    cy.getDataCy('input-current-password').clear().type(currentPassword)
-    cy.getDataCy('input-new-password').clear().type(newPassword)
+    cy.typeInput('input-current-password', currentPassword)
+    cy.typeInput('input-new-password', newPassword)
+
     cy.getDataCy('btn-submit-password-update').click()
   }
 
   describe('should be able to update email', () => {
     it('should throw form error when email is invalid', () => {
       updateEmail('test')
-      cy.getDataCy('error-message-email')
-        .should('be.visible')
-        .and('have.text', EMAIL_ERROR)
+      cy.checkErrorMessage('error-message-email', EMAIL_ERROR)
     })
 
     it('should throw form error when email is the same as the current email', () => {
@@ -76,23 +75,23 @@ context('Settings', () => {
   describe('should be able to update password', () => {
     it('should throw form error when password is too short', () => {
       updatePassword('test', 'test')
-      cy.getDataCy('error-message-current-password')
-        .should('be.visible')
-        .and('have.text', PASSWORD_SHORT_ERROR)
-      cy.getDataCy('error-message-new-password')
-        .should('be.visible')
-        .and('have.text', PASSWORD_SHORT_ERROR)
+      cy.checkErrorMessage(
+        'error-message-current-password',
+        PASSWORD_SHORT_ERROR
+      )
+      cy.checkErrorMessage('error-message-new-password', PASSWORD_SHORT_ERROR)
     })
 
     it('should throw form error when password is too long', () => {
       const longPassword = 't'.repeat(35)
+
       updatePassword(longPassword, longPassword)
-      cy.getDataCy('error-message-current-password')
-        .should('be.visible')
-        .and('have.text', PASSWORD_LONG_ERROR)
-      cy.getDataCy('error-message-new-password')
-        .should('be.visible')
-        .and('have.text', PASSWORD_LONG_ERROR)
+
+      cy.checkErrorMessage(
+        'error-message-current-password',
+        PASSWORD_LONG_ERROR
+      )
+      cy.checkErrorMessage('error-message-new-password', PASSWORD_LONG_ERROR)
     })
 
     it('should throw form error when password is the same as the current password', () => {
@@ -102,11 +101,14 @@ context('Settings', () => {
 
     it('should update password', () => {
       const newPassword = 'newpassword123'
+
       updatePassword(verifiedUser.password, newPassword)
+
       cy.contains('li', PASSWORD_SUCCESS)
 
       // Revert the password back to the original password
       updatePassword(newPassword, verifiedUser.password)
+
       cy.contains('li', PASSWORD_SUCCESS)
     })
   })

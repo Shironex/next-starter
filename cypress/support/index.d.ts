@@ -10,6 +10,8 @@ declare namespace Cypress {
     getDataCy(value: string): Chainable<JQuery<HTMLElement>>
     interceptRequest(method: string): void
     eqUrl(path: string): Chainable<string>
+    checkErrorMessage(dataCy: string, expectedText: string): void
+    typeInput(dataCy: string, text: string): void
     login(email: string, password: string): void
     register(email: string, password: string, firstName: string, lastName): void
     logout(): void

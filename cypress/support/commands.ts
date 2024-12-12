@@ -6,18 +6,30 @@ Cypress.Commands.add('getBySelLike', (selector, ...args) => {
   return cy.get(`[data-cy*=${selector}]`, ...args)
 })
 
-Cypress.Commands.add('getDataCy', (value) => {
+Cypress.Commands.add('getDataCy', (value: string) => {
   return cy.get(`[data-cy=${value}]`)
 })
 
-Cypress.Commands.add('interceptRequest', (method) => {
+Cypress.Commands.add('interceptRequest', (method: string) => {
   cy.intercept({ method, path: '/api/employees' }, (req) => {
     req.alias = method
   })
 })
 
-Cypress.Commands.add('eqUrl', (path) => {
+Cypress.Commands.add('eqUrl', (path: string) => {
   return cy.url().should('eq', `${Cypress.config().baseUrl}/${path}`)
+})
+
+Cypress.Commands.add(
+  'checkErrorMessage',
+  (dataCy: string, expectedText: string) => {
+    cy.getDataCy(dataCy).should('be.visible')
+    cy.getDataCy(dataCy).should('have.text', expectedText)
+  }
+)
+
+Cypress.Commands.add('typeInput', (dataCy, text) => {
+  cy.getDataCy(dataCy).type(text)
 })
 
 Cypress.Commands.add('login', (email: string, password: string) => {
@@ -26,8 +38,8 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     () => {
       cy.visit('/sign-in')
       cy.getAllCookies().should('be.empty')
-      cy.getDataCy('email-input').type(email)
-      cy.getDataCy('password-input').type(password)
+      cy.typeInput('email-input', email)
+      cy.typeInput('password-input', password)
 
       cy.getDataCy('sign-in-btn').click()
 
@@ -50,10 +62,11 @@ Cypress.Commands.add(
   'register',
   (email: string, password: string, firstName: string, lastName: string) => {
     cy.getAllCookies().should('be.empty')
-    cy.getDataCy('email-input').type(email)
-    cy.getDataCy('password-input').type(password)
-    cy.getDataCy('first-name-input').type(firstName)
-    cy.getDataCy('last-name-input').type(lastName)
+
+    cy.typeInput('email-input', email)
+    cy.typeInput('password-input', password)
+    cy.typeInput('first-name-input', firstName)
+    cy.typeInput('last-name-input', lastName)
 
     cy.getDataCy('sign-up-btn').click()
 
@@ -61,11 +74,11 @@ Cypress.Commands.add(
 
     // Get the verification code from the database
 
-    cy.task('getVerificationCode', email).then((code) => {
+    cy.task('getVerificationCode', email).then((code: string | null) => {
       expect(code).to.not.be.null
 
       // Type the code into the OTP input field
-      cy.getDataCy('otp-input').type(code as string)
+      cy.typeInput('otp-input', code as string)
 
       // Click the verify button
       cy.getDataCy('verify-btn').click()
@@ -79,7 +92,10 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('logout', () => {
   cy.getDataCy('btn-user-dropdown').click()
+
   cy.getDataCy('logout-btn').click()
+
   cy.url().should('eq', `${Cypress.config().baseUrl}/sign-in`)
+
   cy.getCookie('session').should('not.exist')
 })
