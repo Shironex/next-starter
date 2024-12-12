@@ -14,11 +14,12 @@ type Props = {
   profile: Profile
 }
 
-type Pathname = Route['pathname']
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type StaticRoute = Exclude<Route, { query: any }>['pathname']
 
 type NavItem = {
   label: string
-  href: Pathname
+  href: StaticRoute
 }
 
 const navItems: NavItem[] = [
