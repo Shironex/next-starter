@@ -21,6 +21,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/forgot-password">
     | DynamicRoute<"/forgot-password/[token]", { "token": string }>
     | StaticRoute<"/onboarding">
+    | StaticRoute<"/settings">
     | StaticRoute<"/sign-in">
     | StaticRoute<"/sign-up">
     | StaticRoute<"/verify-email">;

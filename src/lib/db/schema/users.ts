@@ -1,4 +1,4 @@
-import { boolean, index, varchar, pgTable, text } from 'drizzle-orm/pg-core'
+import { boolean, index, pgTable, text, varchar } from 'drizzle-orm/pg-core'
 
 export const users = pgTable(
   'users',
@@ -15,14 +15,5 @@ export const users = pgTable(
 export type User = typeof users.$inferSelect & {
   registered2FA: boolean
 }
-export type SafeUser = Omit<
-  User,
-  | 'hashedPassword'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'emailVerified'
-  | 'recoveryCode'
-> & {
-  registered2FA: boolean
-}
+
 export type NewUser = typeof users.$inferInsert

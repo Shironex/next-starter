@@ -4,9 +4,12 @@ import { getCurrentSession } from '@/lib/auth/session'
 import { redirects } from '@/lib/constants'
 
 import { BaseLayoutProps } from '@/types'
+import { getUserProfileUseCase } from '@/use-cases/users'
+
+import Header from './dashboard/_components/header'
 
 const MainProjectLayout = async ({ children }: BaseLayoutProps) => {
-  const { user } = await getCurrentSession()
+  const { user, account } = await getCurrentSession()
 
   if (!user) {
     redirect(redirects.toSignin)
@@ -16,12 +19,15 @@ const MainProjectLayout = async ({ children }: BaseLayoutProps) => {
     return redirect(redirects.toVerify)
   }
 
-  //   if (user.registered2FA && !session.twoFactorVerified) {
-  //     console.log('redirecting to 2fa')
-  //     return redirect(get2FARedirect(account))
-  //   }
+  const profile = await getUserProfileUseCase(user.id)
 
-  return <>{children}</>
+  return (
+    <div>
+      <Header user={user} role={account.role} profile={profile} />
+
+      {children}
+    </div>
+  )
 }
 
 export default MainProjectLayout

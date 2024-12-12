@@ -67,3 +67,10 @@ export async function getAccountByGoogleId(googleId: string) {
 export async function updateAccount(userId: string, data: Partial<Account>) {
   return await db.update(accounts).set(data).where(eq(accounts.userId, userId))
 }
+
+export async function updateAccountPassword(userId: string, password: string) {
+  return await db
+    .update(accounts)
+    .set({ password })
+    .where(eq(accounts.userId, userId))
+}

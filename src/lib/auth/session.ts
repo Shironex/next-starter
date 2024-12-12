@@ -1,16 +1,19 @@
+import { cookies } from 'next/headers'
+import { cache } from 'react'
+
+import 'server-only'
+
 import { AuthService } from '@/lib/auth'
 import { generateId } from '@/lib/auth/crypto'
-import { redirects } from '@/lib/constants'
 import { AuthenticationError } from '@/lib/errors'
+
 import { AccountRole } from '@/types'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { cache } from 'react'
-import 'server-only'
+
 import { validateRequest } from './validate-request'
 
 export const getCurrentSession = cache(async () => {
   const session = await validateRequest()
+
   if (!session.session || !session.user || !session.account) {
     return {
       user: undefined,
@@ -74,12 +77,9 @@ export async function setSession(
 }
 
 export async function updateSession(
+  userId: string,
   is2FAVerified: boolean = false,
   oldSessionId?: string
 ) {
-  const { user } = await getCurrentSession()
-  if (!user) {
-    return redirect(redirects.toSignin)
-  }
-  await setSession(user.id, is2FAVerified, oldSessionId)
+  await setSession(userId, is2FAVerified, oldSessionId)
 }
