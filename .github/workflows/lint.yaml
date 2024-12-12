@@ -20,7 +20,7 @@ jobs:
         run: pnpm run lint
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXT_PUBLIC_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
           APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }},
           ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
