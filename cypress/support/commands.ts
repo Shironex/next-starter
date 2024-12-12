@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /// <reference types="cypress" />
 import 'cypress-v10-preserve-cookie'
 

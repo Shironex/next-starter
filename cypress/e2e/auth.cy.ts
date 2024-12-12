@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /// <reference types="cypress" />
 import {
   notVerifiedUser,
@@ -196,11 +197,11 @@ context('Auth', () => {
     })
   })
 
-  // describe('Logout', () => {
-  //   it('should user be able to logout successfully', () => {
-  //     cy.login(verifiedUser.email, verifiedUser.password)
-  //     cy.visit(`${Cypress.config().baseUrl}/projects`)
-  //     cy.logout()
-  //   })
-  // })
+  describe('Logout', () => {
+    it('should user be able to logout successfully', () => {
+      cy.login(verifiedUser.email, verifiedUser.password)
+      cy.visit(`${Cypress.config().baseUrl}/dashboard`)
+      cy.logout()
+    })
+  })
 })
