@@ -24,6 +24,7 @@ import { passwordFormValues, passwordSchema } from './validation'
 export default function PasswordForm() {
   const form = useForm<passwordFormValues>({
     resolver: zodResolver(passwordSchema),
+    mode: 'onChange',
     defaultValues: { currentPassword: '', newPassword: '' },
   })
 
@@ -55,17 +56,18 @@ export default function PasswordForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel htmlFor="current-password">
-                  Current PasswordF
+                  Current Password
                 </FormLabel>
                 <FormControl>
                   <PasswordInput
                     id="current-password"
                     placeholder="Enter your current password"
+                    data-cy="input-current-password"
                     required
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-cy="error-message-current-password" />
               </FormItem>
             )}
           />
@@ -80,11 +82,12 @@ export default function PasswordForm() {
                   <PasswordInput
                     id="new-password"
                     placeholder="Enter your new password"
+                    data-cy="input-new-password"
                     required
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage data-cy="error-message-new-password" />
               </FormItem>
             )}
           />
@@ -94,6 +97,7 @@ export default function PasswordForm() {
           className="w-full rounded-xl sm:w-auto"
           disabled={isPending}
           loading={isPending}
+          data-cy="btn-submit-password-update"
         >
           Update Password
         </LoadingButton>

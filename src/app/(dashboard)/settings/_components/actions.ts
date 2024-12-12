@@ -37,7 +37,9 @@ export const updatePasswordAction = authenticatedAction
   .input(passwordSchema)
   .handler(async ({ input, ctx }) => {
     if (input.currentPassword === input.newPassword) {
-      throw new PublicError('New Password cant be same as current one.')
+      throw new PublicError(
+        'The new password cannot be the same as the current password'
+      )
     }
 
     await updateUserPasswordUseCase(

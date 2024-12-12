@@ -7,12 +7,23 @@ export const emailSchema = z.object({
 })
 
 export const passwordSchema = z.object({
-  currentPassword: z.string().min(6, {
-    message: 'Password must be at least 6 characters',
-  }),
-  newPassword: z.string().min(6, {
-    message: 'Password must be at least 6 characters',
-  }),
+  currentPassword: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters',
+    })
+    .max(32, {
+      message: 'Password can be at most 32 characters long',
+    }),
+
+  newPassword: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters',
+    })
+    .max(32, {
+      message: 'Password can be at most 32 characters long',
+    }),
 })
 
 export const avatarSchema = z.object({

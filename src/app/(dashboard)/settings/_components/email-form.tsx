@@ -75,7 +75,7 @@ export default function EmailForm() {
           loading={isPending}
           type="submit"
           className="w-full rounded-xl sm:w-auto"
-          data-cy="btn-submit"
+          data-cy="btn-submit-email-update"
         >
           Update Email
         </LoadingButton>
