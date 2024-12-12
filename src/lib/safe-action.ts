@@ -1,7 +1,10 @@
 /* eslint-disable n/no-process-env */
-import { env } from '@/env/server'
-import { assertAuthenticated } from '@/lib/auth/session'
 import { createServerActionProcedure } from 'zsa'
+
+import { assertAuthenticated } from '@/lib/auth/session'
+
+import { env } from '@/env/server'
+
 import { PublicError } from './errors'
 import { rateLimitByKey } from './ratelimit'
 
@@ -35,7 +38,7 @@ export const authenticatedAction = createServerActionProcedure()
   .handler(async () => {
     const { user, account, session } = await assertAuthenticated()
 
-    if (process.env.cypress_test) {
+    if (process.env.cypress_test === 'true') {
       return { user, account, session }
     }
 

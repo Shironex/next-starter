@@ -1,3 +1,4 @@
+/* eslint-disable n/no-process-env */
 import Redis from 'ioredis'
 
 import { env } from '@/env/server'
@@ -17,7 +18,7 @@ const rateLimiter = async (
   limit: number,
   duration: number
 ): Promise<Result> => {
-  if (env.NODE_ENV === 'test') {
+  if (env.NODE_ENV === 'test' || process.env.cypress_test === 'true') {
     return { limit, remaining: limit, success: true } as Result
   }
 
@@ -45,16 +46,13 @@ const rateLimiter = async (
  * @returns A promise that resolves to a Result object indicating the rate limit status.
  * @example
  * const result = await rateLimitByKey('user123', 100, 3600);
- * if (!result.success) {
- *   console.log('Rate limit exceeded');
- * }
  */
 export const rateLimitByKey = async (
   keyword: string,
   limit: number,
   duration: number
 ): Promise<Result> => {
-  if (env.NODE_ENV === 'test') {
+  if (env.NODE_ENV === 'test' || process.env.cypress_test === 'true') {
     return { limit, remaining: limit, success: true } as Result
   }
 

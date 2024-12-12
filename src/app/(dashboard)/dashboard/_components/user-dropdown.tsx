@@ -35,7 +35,7 @@ const UserDropdown = ({ user, role, profile }: Props) => {
         <Button
           variant="ghost"
           className="relative h-8 w-8 rounded-full"
-          data-cy="profile-btn"
+          data-cy="btn-user-dropdown"
         >
           <Avatar className="h-8 w-8">
             <AvatarImage
@@ -55,7 +55,10 @@ const UserDropdown = ({ user, role, profile }: Props) => {
             <p className="text-sm font-medium leading-none">
               {profile.displayName}
             </p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p
+              className="text-xs leading-none text-muted-foreground"
+              data-cy="user-email"
+            >
               {user.email}
             </p>
             <p className="text-xs leading-none text-muted-foreground">{role}</p>

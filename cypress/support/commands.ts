@@ -78,7 +78,7 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('logout', () => {
-  cy.getDataCy('profile-btn').click()
+  cy.getDataCy('btn-user-dropdown').click()
   cy.getDataCy('logout-btn').click()
   cy.url().should('eq', `${Cypress.config().baseUrl}/sign-in`)
   cy.getCookie('session').should('not.exist')
