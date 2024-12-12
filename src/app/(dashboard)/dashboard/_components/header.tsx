@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { Route } from 'nextjs-routes'
+
 import { Profile, User } from '@/lib/db/schema'
 
 import { AccountRole } from '@/types'
@@ -12,7 +14,14 @@ type Props = {
   profile: Profile
 }
 
-const navItems = [
+type Pathname = Route['pathname']
+
+type NavItem = {
+  label: string
+  href: Pathname
+}
+
+const navItems: NavItem[] = [
   {
     label: 'Home',
     href: '/',
