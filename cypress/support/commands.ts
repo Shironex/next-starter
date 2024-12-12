@@ -74,7 +74,7 @@ Cypress.Commands.add(
 
     // Get the verification code from the database
 
-    cy.task('getVerificationCode', email).then((code: string | null) => {
+    cy.task('getVerificationCode', email).then((code) => {
       expect(code).to.not.be.null
 
       // Type the code into the OTP input field
