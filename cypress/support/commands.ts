@@ -43,7 +43,7 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 
       cy.getDataCy('sign-in-btn').click()
 
-      cy.url().should('eq', `${Cypress.config().baseUrl}/dashboard`)
+      cy.eqUrl('dashboard')
     },
     {
       validate() {
@@ -70,7 +70,9 @@ Cypress.Commands.add(
 
     cy.getDataCy('sign-up-btn').click()
 
-    cy.url().should('eq', `${Cypress.config().baseUrl}/verify-email`)
+    cy.wait(3000)
+
+    cy.eqUrl('verify-email')
 
     // Get the verification code from the database
 
@@ -85,7 +87,7 @@ Cypress.Commands.add(
 
       cy.wait(3000)
       // Assert that the URL changes to the dashboard after verification
-      cy.url().should('eq', `${Cypress.config().baseUrl}/dashboard`)
+      cy.eqUrl('dashboard')
     })
   }
 )
@@ -95,7 +97,7 @@ Cypress.Commands.add('logout', () => {
 
   cy.getDataCy('logout-btn').click()
 
-  cy.url().should('eq', `${Cypress.config().baseUrl}/sign-in`)
+  cy.eqUrl('sign-in')
 
   cy.getCookie('session').should('not.exist')
 })
