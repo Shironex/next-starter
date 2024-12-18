@@ -7,12 +7,12 @@ runs:
     - uses: actions/setup-node@v4
       name: Install Node.js ⚙️
       with:
-        node-version: 20
+        node-version: 23.3.0
 
     - uses: pnpm/action-setup@v4
       name: Install pnpm 🔧
       with:
-        version: 8
+        version: 9.12.3
         run_install: false
 
     - name: Expose pnpm config(s) through "$GITHUB_OUTPUT"
@@ -44,5 +44,10 @@ runs:
           ${{ runner.os }}-cypress-
 
     - name: Install dependencies 🔧
-      run: pnpm install
+      run: |
+        if [ "${{ env.CYPRESS_INSTALL_BINARY }}" != "0" ]; then
+          pnpm install
+        else
+          CYPRESS_INSTALL_BINARY=0 pnpm install
+        fi
       shell: bash
