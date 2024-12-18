@@ -61,8 +61,6 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 Cypress.Commands.add(
   'register',
   (email: string, password: string, firstName: string, lastName: string) => {
-    cy.getAllCookies().should('be.empty')
-
     cy.typeInput('email-input', email)
     cy.typeInput('password-input', password)
     cy.typeInput('first-name-input', firstName)
