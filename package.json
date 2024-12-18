@@ -16,6 +16,10 @@
     "db:setup": "pnpm db:generate && pnpm db:migrate",
     "cy:open": "cypress open"
   },
+  "engines": {
+    "node": "23.3.0",
+    "pnpm": "9.12.3"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@oslojs/crypto": "^1.0.1",
