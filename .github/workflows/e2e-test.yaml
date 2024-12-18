@@ -16,7 +16,7 @@ jobs:
       DEBUG: '@cypress/github-action'
       NODE_ENV: test
       cypress_test: true
-      CYPRESS_INSTALL_BINARY: 1
+      CYPRESS_INSTALL_BINARY: true
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
       APP_DOMAIN: ${{ secrets.APP_DOMAIN }}

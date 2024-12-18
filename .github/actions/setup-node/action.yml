@@ -45,7 +45,7 @@ runs:
 
     - name: Install dependencies 🔧
       run: |
-        if [ "${{ env.CYPRESS_INSTALL_BINARY }}" != "0" ]; then
+        if [ "${{ env.CYPRESS_INSTALL_BINARY }}" === "true" ]; then
           pnpm install
         else
           CYPRESS_INSTALL_BINARY=0 pnpm install
