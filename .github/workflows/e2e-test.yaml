@@ -20,7 +20,6 @@ jobs:
       DEBUG: '@cypress/github-action'
       NODE_ENV: test
       cypress_test: true
-      CYPRESS_INSTALL_BINARY: true
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
       APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
@@ -37,6 +36,8 @@ jobs:
 
       - name: Setup Node.js ⚙️ - Cache dependencies ⚡ - Install dependencies 🔧
         uses: ./.github/actions/setup-node
+        with:
+          enable-cypress-cache: 'true'
 
       - name: Start Docker Compose
         uses: hoverkraft-tech/compose-action@v1.5.1
