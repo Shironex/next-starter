@@ -1,9 +1,10 @@
 import { defineConfig } from 'cypress'
 import { resolve } from 'path'
+
 import task from './cypress/tasks'
 
 export default defineConfig({
-  projectId: '9iytpp',
+  projectId: 'xqxexj',
   component: {
     devServer: {
       framework: 'next',
