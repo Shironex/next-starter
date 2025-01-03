@@ -18,9 +18,8 @@ jobs:
     name: Run Cypress e2e tests
     env:
       DEBUG: '@cypress/github-action'
-      NODE_ENV: test
+      NODE_ENV: production
       cypress_test: true
-      CYPRESS_INSTALL_BINARY: true
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
       APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
@@ -29,6 +28,8 @@ jobs:
       SMTP_HOST: ${{ secrets.SMTP_HOST }},
       SMTP_PORT: ${{ secrets.SMTP_PORT }},
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
