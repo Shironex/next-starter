@@ -18,7 +18,7 @@ jobs:
     name: Run Cypress e2e tests
     env:
       DEBUG: '@cypress/github-action'
-      NODE_ENV: production
+      NODE_ENV: test
       cypress_test: true
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
