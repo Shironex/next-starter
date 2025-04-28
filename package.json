@@ -17,8 +17,8 @@
     "cy:open": "cypress open"
   },
   "engines": {
-    "node": "22.11.0",
-    "pnpm": "10.9.0"
+    "node": ">=22.11.0",
+    "pnpm": ">=10.9.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

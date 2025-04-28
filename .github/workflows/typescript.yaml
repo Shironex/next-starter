@@ -16,13 +16,8 @@ jobs:
       - name: Setup Node.js ⚙️ - Cache dependencies ⚡ - Install dependencies 🔧
         uses: ./.github/actions/setup-node
 
+      - name: copy .env.example to .env
+        run: cp .env.example .env
+
       - name: TypeScript check
         run: pnpm run typecheck
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
-          APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }},
-          ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
-          SMTP_HOST: ${{ secrets.SMTP_HOST }},
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
