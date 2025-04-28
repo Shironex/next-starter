@@ -3,8 +3,8 @@
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -37,23 +37,25 @@ const SignUpForm = () => {
     },
   })
 
-  const { execute, isPending } = useServerAction(signUpAction, {
+  const { executeAsync, isPending } = useAction(signUpAction, {
     onSuccess() {
       toast({
         title: 'Account created',
         description: 'Please check your email for verification',
       })
     },
-    onError({ err }) {
+    onError({ error }) {
       toast({
         title: 'Something went wrong',
-        description: err.message,
+        description: error.serverError,
         variant: 'destructive',
       })
     },
   })
 
-  const handleSubmit = form.handleSubmit((data) => execute(data))
+  const handleSubmit = form.handleSubmit(
+    async (data) => await executeAsync(data)
+  )
 
   return (
     <div>

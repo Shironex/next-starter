@@ -14,16 +14,19 @@ import {
 import { avatarSchema, emailSchema, passwordSchema } from './validation'
 
 export const updateEmailAction = authenticatedAction
-  .createServerAction()
-  .input(emailSchema)
-  .handler(async ({ input, ctx }) => {
-    if (input.email === ctx.user.email) {
+  .metadata({
+    actionName: 'update-email',
+    role: 'user',
+  })
+  .schema(emailSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    if (parsedInput.email === ctx.user.email) {
       throw new PublicError(
         'The new email cannot be the same as the current email'
       )
     }
 
-    await updateUserEmailUseCase(ctx.user.id, input.email)
+    await updateUserEmailUseCase(ctx.user.id, parsedInput.email)
     await updateSession(
       ctx.user.id,
       ctx.session.twoFactorVerified,
@@ -33,10 +36,13 @@ export const updateEmailAction = authenticatedAction
   })
 
 export const updatePasswordAction = authenticatedAction
-  .createServerAction()
-  .input(passwordSchema)
-  .handler(async ({ input, ctx }) => {
-    if (input.currentPassword === input.newPassword) {
+  .metadata({
+    actionName: 'update-password',
+    role: 'user',
+  })
+  .schema(passwordSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    if (parsedInput.currentPassword === parsedInput.newPassword) {
       throw new PublicError(
         'The new password cannot be the same as the current password'
       )
@@ -44,8 +50,8 @@ export const updatePasswordAction = authenticatedAction
 
     await updateUserPasswordUseCase(
       ctx.user.id,
-      input.currentPassword,
-      input.newPassword
+      parsedInput.currentPassword,
+      parsedInput.newPassword
     )
 
     await updateSession(
@@ -58,9 +64,12 @@ export const updatePasswordAction = authenticatedAction
   })
 
 export const updateAvatarAction = authenticatedAction
-  .createServerAction()
-  .input(avatarSchema)
-  .handler(async () => {
+  .metadata({
+    actionName: 'update-avatar',
+    role: 'user',
+  })
+  .schema(avatarSchema)
+  .action(async ({ parsedInput: _parsedInput, ctx: _ctx }) => {
     // This is a mock implementation. In a real application, you would update the user's avatar in your database.
     console.log('Updating avatar')
     await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call

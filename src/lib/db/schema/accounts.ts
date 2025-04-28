@@ -1,6 +1,7 @@
-import { pgTable, varchar, text, index, boolean } from 'drizzle-orm/pg-core'
-import { users } from './users'
+import { boolean, index, pgTable, text, varchar } from 'drizzle-orm/pg-core'
+
 import { accountTypeEnum, roleEnum } from './enums'
+import { users } from './users'
 
 export const accounts = pgTable(
   'accounts',

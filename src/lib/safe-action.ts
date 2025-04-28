@@ -1,58 +1,68 @@
-/* eslint-disable n/no-process-env */
-import { createServerActionProcedure } from 'zsa'
-
-import { assertAuthenticated } from '@/lib/auth/session'
+import { createSafeActionClient } from 'next-safe-action'
+import { z } from 'zod'
 
 import { env } from '@/env/server'
 
-import { PublicError } from './errors'
-import { rateLimitByKey } from './ratelimit'
+import { getCurrentSession } from './auth/session'
+import { AuthenticationError, PublicError } from './errors'
+import { logger } from './logger'
 
-const LIMIT_DURATION = 60
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function shapeErrors({ err }: any) {
-  const isAllowedError = err instanceof PublicError
-  // let's all errors pass through to the UI so debugging locally is easier
-  const isDev = env.NODE_ENV === 'development'
-
-  if (isAllowedError || isDev) {
-    console.error(err)
-    return {
-      code: err.code ?? 'ERROR',
-      message: `${!isAllowedError && isDev ? 'DEV ONLY ENABLED - ' : ''}${
-        err.message
-      }`,
+// Base client.
+const unauthenticatedAction = createSafeActionClient({
+  defineMetadataSchema() {
+    return z.object({
+      actionName: z.string(),
+      role: z.enum(['admin', 'user']).default('user'),
+    })
+  },
+  async handleServerError(err, _utils) {
+    const isAllowedError = err instanceof PublicError
+    const isDev = env.NODE_ENV === 'development'
+    logger.error('Error ->', err)
+    if (isAllowedError || isDev) {
+      logger.error(err)
+      return `${!isAllowedError && isDev ? 'DEV ONLY ENABLED - ' : ''}${err.message}`
+    } else {
+      logger.error(err)
+      return 'Something went wrong'
     }
-  } else {
-    console.error(err)
-    return {
-      code: 'ERROR',
-      message: 'Something went wrong',
+  },
+}).use(async ({ next, metadata }) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+  logger.info('LOGGING MIDDLEWARE')
+  
+  const startTime = performance.now()
+  
+  // Here we await the action execution.
+  const result = await next()
+  
+  const endTime = performance.now()
+  
+  logger.info('Action metadata:', metadata)
+  logger.info('Action execution took', endTime - startTime, 'ms')
+
+  // And then return the result of the awaited action.
+  return result
+})
+
+// Auth client defined by extending the base one.
+// Note that the same initialization options and middleware functions of the base client
+// will also be used for this one.
+const authenticatedAction = unauthenticatedAction.use(
+  async ({ next }) => {
+    const { user, account, session } = await getCurrentSession()
+
+    if (!user || !account || !session) {
+      throw new AuthenticationError()
     }
+
+    return next({
+      ctx: {
+        user,
+        account,
+        session,
+      },
+    })
   }
-}
+)
 
-export const authenticatedAction = createServerActionProcedure()
-  .experimental_shapeError(shapeErrors)
-  .handler(async () => {
-    const { user, account, session } = await assertAuthenticated()
-
-    if (process.env.cypress_test === 'true') {
-      return { user, account, session }
-    }
-
-    await rateLimitByKey(`${user.id}-global`, 20, LIMIT_DURATION)
-
-    return { user, account, session }
-  })
-
-export const unauthenticatedAction = createServerActionProcedure()
-  .experimental_shapeError(shapeErrors)
-  .handler(async () => {
-    if (process.env.cypress_test === 'true') {
-      return
-    }
-
-    await rateLimitByKey('unauthenticated', 10, LIMIT_DURATION)
-  })
+export { authenticatedAction, unauthenticatedAction }

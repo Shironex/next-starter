@@ -3,8 +3,8 @@
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -37,11 +37,11 @@ const SignInForm = () => {
     },
   })
 
-  const { execute, isPending } = useServerAction(signInAction, {
-    onError({ err }) {
+  const { executeAsync, isPending } = useAction(signInAction, {
+    onError({ error }) {
       toast({
         title: 'Something went wrong',
-        description: err.message,
+        description: error.serverError,
         variant: 'destructive',
       })
     },
@@ -53,7 +53,9 @@ const SignInForm = () => {
     },
   })
 
-  const handleSubmit = form.handleSubmit((data) => execute(data))
+  const handleSubmit = form.handleSubmit(
+    async (data) => await executeAsync(data)
+  )
 
   return (
     <div>

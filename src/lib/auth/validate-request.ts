@@ -1,9 +1,11 @@
-import { AuthService, SessionValidationResult } from '@/lib/auth'
 import { cookies } from 'next/headers'
+
+import { AuthService, SessionValidationResult } from '@/lib/auth'
 
 export const validateRequest = async (): Promise<SessionValidationResult> => {
   const sessionCookieName = AuthService.getSessionCookieName()
-  const sessionId = cookies().get(sessionCookieName)?.value ?? null
+  const cookiesInstance = await cookies()
+  const sessionId = cookiesInstance.get(sessionCookieName)?.value ?? null
 
   if (!sessionId) {
     return { user: null, session: null, account: null }
@@ -16,7 +18,7 @@ export const validateRequest = async (): Promise<SessionValidationResult> => {
   try {
     if (result.session) {
       const sessionCookie = AuthService.createSessionCookie(result.session.id)
-      cookies().set(
+      cookiesInstance.set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes
@@ -24,7 +26,7 @@ export const validateRequest = async (): Promise<SessionValidationResult> => {
     }
     if (!result.session) {
       const sessionCookie = AuthService.createBlankSessionCookie()
-      cookies().set(
+      cookiesInstance.set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes

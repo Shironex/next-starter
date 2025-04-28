@@ -1,13 +1,3 @@
-import { env } from '@/env/server'
-import { db } from '@/lib/db'
-import {
-  Account,
-  accounts,
-  Session,
-  sessions,
-  User,
-  users,
-} from '@/lib/db/schema'
 import type { RandomReader } from '@oslojs/crypto/random'
 import { generateRandomString } from '@oslojs/crypto/random'
 import { sha256 } from '@oslojs/crypto/sha2'
@@ -16,6 +6,18 @@ import {
   encodeHexLowerCase,
 } from '@oslojs/encoding'
 import { eq } from 'drizzle-orm'
+
+import { db } from '@/lib/db'
+import {
+  Account,
+  Session,
+  User,
+  accounts,
+  sessions,
+  users,
+} from '@/lib/db/schema'
+
+import { env } from '@/env/server'
 
 export type SessionValidationResult =
   | { session: Session; user: User; account: Account }
@@ -196,4 +198,3 @@ function generateId(length: number): string {
 const authServiceInstance = new AuthService()
 
 export { authServiceInstance as AuthService, generateId }
-

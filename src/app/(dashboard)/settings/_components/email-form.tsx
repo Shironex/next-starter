@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -28,7 +28,7 @@ export default function EmailForm() {
     defaultValues: { email: '' },
   })
 
-  const { execute, isPending } = useServerAction(updateEmailAction, {
+  const { execute, isPending } = useAction(updateEmailAction, {
     onSuccess: () => {
       toast({
         title: 'Success',
@@ -36,10 +36,10 @@ export default function EmailForm() {
       })
       form.reset()
     },
-    onError: ({ err }) => {
+    onError: ({ error }) => {
       toast({
         title: 'Error',
-        description: err.message,
+        description: error.serverError,
       })
     },
   })

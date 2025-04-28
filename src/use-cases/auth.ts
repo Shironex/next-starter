@@ -1,20 +1,35 @@
 import { TimeSpan, createDate, isWithinExpirationDate } from 'oslo'
 import { alphabet, generateRandomString } from 'oslo/crypto'
 
+import { generateId } from '@/lib/auth'
+import { invalidateSession } from '@/lib/auth/session'
 import { EmailInUseError, LoginError, PublicError } from '@/lib/errors'
 import { sendMail } from '@/lib/mail/nodemailer'
-import { renderResetPasswordEmail, renderVerificationCodeEmail } from '@/lib/mail/render'
+import {
+  renderResetPasswordEmail,
+  renderVerificationCodeEmail,
+} from '@/lib/mail/render'
+import { timeFromNow } from '@/lib/utils'
 
-import { createAccount, getAccountByUserId, updateAccount } from '@/data-access/accounts'
+import {
+  createAccount,
+  getAccountByUserId,
+  updateAccount,
+} from '@/data-access/accounts'
 import { hashPassword, verifyPassword } from '@/data-access/auth'
 import { createEmailVerificationCode } from '@/data-access/emails'
 import { createProfile } from '@/data-access/profiles'
-import { createUser, deletePasswordResetCode, findEmailVerificationCode, findPasswordResetCode, findUserByEmail, generatePasswordResetToken, updateUser } from '@/data-access/users'
+import {
+  createUser,
+  deletePasswordResetCode,
+  findEmailVerificationCode,
+  findPasswordResetCode,
+  findUserByEmail,
+  generatePasswordResetToken,
+  updateUser,
+} from '@/data-access/users'
 import { env as envClient } from '@/env/client'
 import { env as envServer } from '@/env/server'
-import { generateId } from '@/lib/auth'
-import { invalidateSession } from '@/lib/auth/session'
-import { timeFromNow } from '@/lib/utils'
 
 export const signInUseCase = async (email: string, password: string) => {
   const user = await findUserByEmail(email)

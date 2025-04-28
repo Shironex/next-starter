@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { Toaster } from '@/components/ui/toaster'
-
+import { BaseLayoutProps } from '@/types'
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: BaseLayoutProps) {
   return (
     <html lang="en">
       <body>

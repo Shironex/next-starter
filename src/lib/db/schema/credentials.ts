@@ -1,4 +1,5 @@
-import { pgTable, varchar, text, integer } from 'drizzle-orm/pg-core'
+import { integer, pgTable, text, varchar } from 'drizzle-orm/pg-core'
+
 import { users } from './users'
 
 export const totpCredentials = pgTable('totp_credentials', {

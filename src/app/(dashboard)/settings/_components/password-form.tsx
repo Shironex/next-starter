@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -28,7 +28,7 @@ export default function PasswordForm() {
     defaultValues: { currentPassword: '', newPassword: '' },
   })
 
-  const { execute, isPending } = useServerAction(updatePasswordAction, {
+  const { execute, isPending } = useAction(updatePasswordAction, {
     onSuccess: () => {
       toast({
         title: 'Success',
@@ -36,10 +36,10 @@ export default function PasswordForm() {
       })
       form.reset()
     },
-    onError: ({ err }) => {
+    onError: ({ error }) => {
       toast({
         title: 'Error',
-        description: err.message,
+        description: error.serverError,
       })
     },
   })

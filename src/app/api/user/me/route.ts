@@ -7,8 +7,8 @@ import { getUserProfileUseCase } from '@/use-cases/users'
 
 export async function GET() {
   const cookieName = AuthService.getSessionCookieName()
-
-  const sessionId = cookies().get(cookieName)?.value ?? null
+  const cookiesInstance = await cookies()
+  const sessionId = cookiesInstance.get(cookieName)?.value ?? null
 
   if (!sessionId) {
     return NextResponse.json(

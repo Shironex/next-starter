@@ -1,4 +1,5 @@
-import { pgTable, serial, varchar, timestamp, index } from 'drizzle-orm/pg-core'
+import { index, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
+
 import { users } from './users'
 
 export const emailVerificationCodes = pgTable(

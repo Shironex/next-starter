@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -36,23 +36,23 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
     },
   })
 
-  const { execute, isPending } = useServerAction(resetPasswordAction, {
-    onSuccess: () => {
+  const { executeAsync, isPending } = useAction(resetPasswordAction, {
+    onError({ error }) {
+      toast({
+        title: 'Error resetting password',
+        description: error.serverError,
+      })
+    },
+    onSuccess() {
       toast({
         title: 'Password reset successfully',
         description: 'Please login with your new password',
       })
     },
-    onError: ({ err }) => {
-      toast({
-        title: 'Error resetting password',
-        description: err.message,
-      })
-    },
   })
 
-  const handleSubmit = form.handleSubmit((data: ResetPasswordInput) =>
-    execute(data)
+  const handleSubmit = form.handleSubmit(
+    async (data: ResetPasswordInput) => await executeAsync(data)
   )
 
   return (

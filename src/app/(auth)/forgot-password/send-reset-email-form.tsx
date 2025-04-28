@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -31,24 +31,24 @@ const SendResetEmailForm = () => {
     },
   })
 
-  const { execute, isPending } = useServerAction(sendPasswordResetLinkAction, {
+  const { executeAsync, isPending } = useAction(sendPasswordResetLinkAction, {
     onSuccess: () => {
       toast({
         title: 'Email sent',
         description: 'A password reset link has been sent to your email.',
       })
     },
-    onError: ({ err }) => {
+    onError: ({ error }) => {
       toast({
         title: 'Error',
-        description: err.message,
+        description: error.serverError,
       })
     },
   })
 
   const handleSubmit: () => void = form.handleSubmit(
     async (data: SendResetEmailInput) => {
-      execute(data)
+      await executeAsync(data)
     }
   )
 

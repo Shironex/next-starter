@@ -12,15 +12,18 @@ import { signUpUseCase } from '@/use-cases/auth'
 import { signUpSchema } from './validation'
 
 export const signUpAction = unauthenticatedAction
-  .createServerAction()
-  .input(signUpSchema)
-  .handler(async ({ input }) => {
-    await rateLimitByKey(`${input.email}-signup`, 5, 120)
+  .metadata({
+    actionName: 'sign-up action',
+    role: 'user',
+  })
+  .schema(signUpSchema)
+  .action(async ({ parsedInput }) => {
+    await rateLimitByKey(`${parsedInput.email}-signup`, 5, 120)
 
     const { id } = await signUpUseCase(
-      input.email,
-      input.password,
-      `${input.firstName} ${input.lastName}`
+      parsedInput.email,
+      parsedInput.password,
+      `${parsedInput.firstName} ${parsedInput.lastName}`
     )
 
     await setSession(id, false)

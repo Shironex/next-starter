@@ -17,29 +17,27 @@ services:
     image: mailhog/mailhog
     container_name: mail_server
     restart: always
-    logging:
-      driver: 'none'
     ports:
       - '1025:1025' # smtp
       - '8025:8025' # web ui
 
   redis:
-    image: redis:latest
+    image: redis/redis-stack:latest
     container_name: redis
     healthcheck:
       test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
       interval: 1s
       timeout: 3s
       retries: 5
-    command: ['redis-server', '--bind', 'redis', '--port', '6379']
     restart: always
     ports:
       - '6379:6379'
+      - '8001:8001'
     networks:
       - postgres
     volumes:
       - redis_data:/data
-
+      
 networks:
   postgres:
     driver: bridge

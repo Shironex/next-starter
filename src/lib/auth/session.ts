@@ -46,9 +46,10 @@ export async function invalidateSession(userId: string) {
   await AuthService.invalidateUserSessions(userId)
 }
 
-export function clearSessionCookie() {
+export async function clearSessionCookie() {
   const sessionCookie = AuthService.createBlankSessionCookie()
-  cookies().set(
+  const cookiesInstance = await cookies()
+  cookiesInstance.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes
@@ -69,7 +70,8 @@ export async function setSession(
     await AuthService.setSessionAs2FAVerified(session.id)
   }
 
-  cookies().set(
+  const cookiesInstance = await cookies()
+  cookiesInstance.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes

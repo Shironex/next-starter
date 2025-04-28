@@ -1,10 +1,11 @@
 import {
-  pgTable,
-  varchar,
-  timestamp,
-  index,
   boolean,
+  index,
+  pgTable,
+  timestamp,
+  varchar,
 } from 'drizzle-orm/pg-core'
+
 import { users } from './users'
 
 export const sessions = pgTable(

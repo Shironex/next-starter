@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm/expressions'
+import { eq } from 'drizzle-orm'
 
 import { generateId } from '@/lib/auth'
 import { db } from '@/lib/db'

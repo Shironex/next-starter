@@ -14,11 +14,13 @@ import { redirects } from '@/lib/constants'
 import ResetPasswordForm from './reset-password-form'
 
 type ResetPasswordPageProps = {
-  params: { token: string }
+  params: Promise<{ token: string }>
 }
+
 const ResetPasswordPage = async ({
-  params: { token },
+  params,
 }: ResetPasswordPageProps) => {
+  const { token } = await params
   const { user } = await getCurrentSession()
 
   if (user) redirect(redirects.afterLogin)

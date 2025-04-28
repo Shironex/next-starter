@@ -1,6 +1,6 @@
 'use client'
 
-import { useServerAction } from 'zsa-react'
+import { useAction } from 'next-safe-action/hooks'
 
 import { LoadingButton } from '@/components/loading-button'
 
@@ -12,7 +12,7 @@ type LogOutButtonProps = {
 
 const LogOutButton = ({ isPending }: LogOutButtonProps) => {
   const { execute: logoutExecute, isPending: logoutIsPending } =
-    useServerAction(logoutAction)
+    useAction(logoutAction)
 
   return (
     <form

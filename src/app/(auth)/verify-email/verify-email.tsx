@@ -2,8 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
-import { useServerAction } from 'zsa-react'
 
 import {
   Form,
@@ -39,24 +39,24 @@ const VerifyEmailForm = () => {
     },
   })
 
-  const { execute, isPending } = useServerAction(verifyEmailAction, {
+  const { executeAsync, isPending } = useAction(verifyEmailAction, {
     onSuccess: () => {
       toast({
         title: 'Email verified',
         description: 'You can now use your account',
       })
     },
-    onError: ({ err }) => {
+    onError: ({ error }) => {
       toast({
         title: 'Something went wrong',
-        description: err.message,
+        description: error.serverError,
         variant: 'destructive',
       })
     },
   })
 
-  const handleSubmit = form.handleSubmit((data: VerifyEmailInput) =>
-    execute(data)
+  const handleSubmit = form.handleSubmit(
+    async (data: VerifyEmailInput) => await executeAsync(data)
   )
 
   return (
