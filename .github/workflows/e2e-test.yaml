@@ -11,10 +11,6 @@ jobs:
   cypress-e2e-test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
     name: Run Cypress e2e tests
     env:
       DEBUG: '@cypress/github-action'
@@ -27,7 +23,6 @@ jobs:
       ENABLE_SIGNUP_WITH_EMAIL: ${{ secrets.ENABLE_SIGNUP_WITH_EMAIL }},
       SMTP_HOST: ${{ secrets.SMTP_HOST }},
       SMTP_PORT: ${{ secrets.SMTP_PORT }},
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
@@ -64,5 +59,3 @@ jobs:
           build: pnpm build
           start: pnpm start
           wait-on: 'http://localhost:3000'
-          record: true
-          parallel: true
