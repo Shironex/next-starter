@@ -43,7 +43,7 @@
     "next": "15.3.1",
     "next-safe-action": "^7.10.8",
     "nextjs-routes": "^2.2.5",
-    "nodemailer": "^6.10.1",
+    "nodemailer": "^7.0.7",
     "oslo": "^1.2.1",
     "postgres": "^3.4.5",
     "react": "^19.1.0",
