@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚠️ This Repository is Archived
 
-## Getting Started
+This template has been **deprecated** and is no longer maintained.
 
-First, run the development server:
+## 🎯 Use the New Template Instead
+
+**👉 [Next.js + NestJS Monorepo Template](https://github.com/Shironex/next-js-nest-js-template)**
+
+The new template is a complete rewrite with significantly more features and better architecture:
+
+### Why Migrate?
+
+The new template offers everything this one had, plus:
+
+- ✅ **Full-Stack TypeScript** - Next.js 15 frontend + NestJS 11 backend
+- ✅ **615 Tests Passing** - Comprehensive test coverage
+- ✅ **Enterprise Authentication** - Complete auth system with email verification, password reset, rate limiting, and bot protection
+- ✅ **Stripe Integration** - Full subscription and payment handling
+- ✅ **Modern UI** - Built with shadcn/ui and Tailwind CSS v4
+- ✅ **Production Ready** - Security headers, CORS, Winston logging, error handling
+- ✅ **Monorepo Architecture** - Turborepo with shared packages
+- ✅ **Email System** - React Email templates with Nodemailer
+- ✅ **Database** - PostgreSQL with Prisma ORM
+- ✅ **Redis** - Session management and rate limiting
+- ✅ **File Uploads** - AWS S3 integration
+
+### Quick Start with New Template
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clone the new template
+git clone https://github.com/Shironex/next-js-nest-js-template.git
+cd next-js-nest-js-template
+
+# Install dependencies
+pnpm install
+
+# Start development services
+docker-compose up -d
+
+# Run migrations
+pnpm --filter=api db:migrate
+
+# Start development
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📚 Documentation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Full documentation is available in the new repository:
+- **[Main README](https://github.com/Shironex/next-js-nest-js-template#readme)** - Complete setup guide
+- **[ROADMAP](https://github.com/Shironex/next-js-nest-js-template/blob/master/ROADMAP.md)** - Future features
+- **[CLAUDE](https://github.com/Shironex/next-js-nest-js-template/blob/master/CLAUDE.md)** - Development guidelines
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+**This repository will remain available for reference but will not receive updates.**
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For new projects, please use: **[next-js-nest-js-template](https://github.com/Shironex/next-js-nest-js-template)**
